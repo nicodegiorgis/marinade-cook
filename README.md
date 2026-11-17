@@ -4,6 +4,36 @@ An offline iPad web app for scaling and cooking bulk marinade batches. It has a 
 
 The full product spec is in [docs/spec.md](docs/spec.md).
 
+## Screenshots
+
+Live app: https://nicodegiorgis.github.io/marinade-cook/
+
+All screenshots use the made-up recipes in `sample-recipes.json`.
+
+![Import screen](docs/screenshots/import-screen.png)
+
+First run: import a recipe file from Files.
+
+![Recipe list](docs/screenshots/recipe-list.png)
+
+Recipe list, A to Z, with search.
+
+![Recipe page at base](docs/screenshots/recipe-base.png)
+
+Recipe page at the base yield, units box empty.
+
+![Recipe page scaled while cooking](docs/screenshots/recipe-scaled-cooking.png)
+
+Scaled to 250 units, cook mode on step 3 with the first two ingredients poured.
+
+![Recipe page in dark theme](docs/screenshots/recipe-scaled-dark.png)
+
+The same batch in the dark theme.
+
+![Recipe page in portrait](docs/screenshots/recipe-portrait.png)
+
+Portrait: cook mode on top, amounts below.
+
 ## Public code, private data
 
 This repo is public and contains **only the app**. The real recipes live in `recipes.json`, which the owner keeps on their own devices and moves to the iPad directly (for example by AirDrop). The app stores imported recipes only in that iPad's local browser storage and makes no network requests at all.
