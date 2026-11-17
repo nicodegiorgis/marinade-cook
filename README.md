@@ -1,6 +1,6 @@
 # Marinade Cook
 
-An offline iPad web app for scaling and cooking bulk marinade batches. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the iPad.
+An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer, and was designed first for an iPad in the kitchen. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the device.
 
 The full product spec is in [docs/spec.md](docs/spec.md).
 
@@ -36,21 +36,24 @@ Portrait: cook mode on top, amounts below.
 
 ## Public code, private data
 
-This repo is public and contains **only the app**. The real recipes live in `recipes.json`, which the owner keeps on their own devices and moves to the iPad directly (for example by AirDrop). The app stores imported recipes only in that iPad's local browser storage and makes no network requests at all.
+This repo is public and contains **only the app**. The real recipes live in `recipes.json`, which the owner keeps on their own devices and moves to the device directly (for example by AirDrop or a USB cable). The app stores imported recipes only in that device's local browser storage and makes no network requests at all.
 
 - `recipes.json` and `*.private.json` are gitignored. Never commit them.
 - `sample-recipes.json` holds made-up recipes for development and testing.
 
-## Install on the iPad
+## Install
 
 1. On GitHub: **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`.
-2. On the iPad, open `https://<username>.github.io/marinade-cook/` in Safari.
-3. Tap Share → **Add to Home Screen**.
-4. Open it **from the Home Screen icon** and tap **Import recipes** to pick `recipes.json` from Files.
-   The Home Screen app has its own storage, separate from Safari, so importing in a Safari tab does not carry over.
-5. Turn on airplane mode and check it still opens.
+2. On the device, open `https://<username>.github.io/marinade-cook/` in the browser.
+3. Install it as an app:
+   - **iPad or iPhone (Safari):** tap Share → **Add to Home Screen**.
+   - **Android (Chrome):** open the menu → **Add to Home screen** or **Install app**.
+   - **Computer (Chrome or Edge):** click the install icon in the address bar.
+4. Open the installed app and tap **Import recipes** to pick `recipes.json`.
+   On iPad and iPhone, the Home Screen app has its own storage, separate from Safari, so importing in a Safari tab does not carry over. Import from the Home Screen icon.
+5. Turn on airplane mode (or go offline) and check it still opens.
 
-Deleting the app from the Home Screen erases its recipes. Keep `recipes.json` somewhere safe so you can import it again.
+Uninstalling the app erases its recipes. Keep `recipes.json` somewhere safe so you can import it again.
 
 ## Using it
 
@@ -59,7 +62,7 @@ Deleting the app from the Home Screen erases its recipes. Keep `recipes.json` so
 - Every amount is in grams, shown as a plain number (`5000 g`, `1250 g`). Typing `1200` in an ingredient box means 1200 g. A comma works as the decimal point.
 - **Cook mode:** tap **Poured** after each ingredient. **Back** steps back one. Tapping an ingredient's name in the list jumps straight to it.
 - **Reset batch** clears progress, returns to the base yield and empties the units box. Progress and amounts are saved per recipe, so closing the app resumes the batch.
-- **Settings** (the menu button on the list) shows the recipe count, import date and app version, lets you import a new file, and has a **Theme** choice: Auto (follows the iPad's light or dark setting, the default), Light or Dark. The choice is saved on the iPad.
+- **Settings** (the menu button on the list) shows the recipe count, import date and app version, lets you import a new file, and has a **Theme** choice: Auto (follows the device's light or dark setting, the default), Light or Dark. The choice is saved on the device.
 
 ## v1 defaults for the open questions
 
