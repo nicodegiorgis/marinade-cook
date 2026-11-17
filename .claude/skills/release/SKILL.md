@@ -15,7 +15,7 @@ Run these in order, and stop and report if any step fails.
    Also confirm that `.gitignore` still lists `recipes.json` and `*.private.json`.
 2. **Tests.** Run `node --test` and make sure every test passes.
 3. **Shell list.** Compare `APP_SHELL` in `sw.js` with the real files (html, css, js, manifest, icons). Add anything missing and remove anything deleted.
-4. **Bump the version.** Increase `CACHE_VERSION` in `sw.js` by one (`v3` to `v4`), and update the app version shown in the settings panel to match.
+4. **Bump the version.** Increase `CACHE_VERSION` in `sw.js` by one (`v3` to `v4`), and update the app version shown in the settings panel to match. In the same step, update `CHANGELOG.md`: move the bullets under "Unreleased" down into a new `## vN (date)` heading that matches the new version number, and leave "Unreleased" empty above it.
 5. **Safety scan.**
    ```bash
    grep -rnE 'innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(' js/ && echo "Review these"
@@ -27,4 +27,4 @@ Run these in order, and stop and report if any step fails.
    - Units and ingredient scaling correct on one recipe
    - Cook mode through a full recipe, then reset
    - Portrait and landscape both look right
-7. **Pull request.** Use a short title and a summary of the changes, list anything not verified, and include the version number.
+7. **Pull request.** Use a short title and a summary of the changes, list anything not verified, and include the version number. Note that the `CHANGELOG.md` entry for this version is part of the release.

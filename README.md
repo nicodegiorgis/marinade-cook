@@ -144,6 +144,8 @@ sample-recipes.json   made-up data
 
 ### Releasing
 
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each released version.
+
 Before a release, run the `release` skill (`.claude/skills/release/`). It checks for private data, runs the tests, checks `APP_SHELL`, and bumps `CACHE_VERSION` in `sw.js` together with `APP_VERSION` in `js/app-version.js`. When you add, rename or remove an app file, update `APP_SHELL` or the app breaks offline.
 
 ## Deploy your own copy
