@@ -61,7 +61,7 @@ Data flows one way: **stores → core → views**. The core never touches the DO
 ## Commands
 
 ```bash
-node --test tests/        # run unit tests
+node --test        # run unit tests
 python3 -m http.server    # serve locally at http://localhost:8000
 ```
 
