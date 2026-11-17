@@ -5,7 +5,7 @@
  * recipe data, which lives only in local storage after import.
  */
 
-const CACHE_VERSION = 'marinade-cook-v1';
+const CACHE_VERSION = 'marinade-cook-v2';
 
 /** Every file the app needs, relative so it works under the GitHub Pages subpath. */
 const APP_SHELL = [
