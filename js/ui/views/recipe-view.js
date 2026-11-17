@@ -95,17 +95,25 @@ export class RecipeView {
 	#buildScalePanel() {
 		this.#unitsInput = this.#amountInput('units-input', {
 			input: (e) => {
+				// An empty units box means "no target yet", so show the base recipe.
+				if (e.target.value.trim() === '') {
+					this.#scaler.reset();
+					this.#changed();
+					return;
+				}
 				if (this.#scaler.setUnits(e.target.value)) {
 					this.#changed();
 				}
 			},
 			blur: () => this.#refresh(),
 		});
+		this.#unitsInput.setAttribute('aria-label', `Units to make. Base is ${this.#recipe.yieldUnits} units.`);
 		const unitsRow = el('div', { className: 'scale-units' }, [
-			el('label', { className: 'scale-units__label', htmlFor: 'units-input' }, [
-				el('span', { className: 'scale-units__word', text: 'Units' }),
-				el('span', { className: 'scale-units__base', text: `${this.#recipe.yieldUnits} →` }),
-			]),
+			el('label', {
+				className: 'scale-units__label',
+				htmlFor: 'units-input',
+				text: `Base: ${this.#recipe.yieldUnits} units`,
+			}),
 			this.#unitsInput,
 		]);
 
@@ -323,10 +331,14 @@ export class RecipeView {
 	}
 
 	/**
-	 * Units box text: the typed value when units are the anchor, otherwise whole units.
+	 * Units box text: empty at the base recipe, the typed value when units are
+	 * the anchor, otherwise the whole units an ingredient amount makes.
 	 * @returns {string}
 	 */
 	#unitsText() {
+		if (this.#scaler.isBase) {
+			return '';
+		}
 		if (this.#scaler.isAnchor('units')) {
 			return String(Number((this.#recipe.yieldUnits * this.#scaler.factor).toFixed(2)));
 		}

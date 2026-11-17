@@ -49,7 +49,11 @@ Shown when no recipes are stored.
 Header: back, the recipe name as the title, and **Reset batch**.
 
 **Left panel: scaling list**
-- Top row: **Units**, with the base yield, then an arrow, then an editable box (it starts at the base yield).
+- Top row: the label **"Base: 100 units"** (the recipe's base yield), then an editable units box.
+  - The box starts **completely empty**, with no placeholder. While it's empty, the ingredients show their base amounts.
+  - Typing units scales everything. Clearing the box goes back to the base amounts.
+  - Typing an ingredient amount fills the units box with the resulting units, rounded down, so it's clear what the batch makes.
+  - **Reset batch** empties the box again.
 - One row per ingredient, in recipe order (the pouring order): the name and an editable amount box.
 - Typing into **any** box rescales everything else live (section 5).
 - An ingredient's `note` shows small, under its name. Recipe `notes[]` show in a block at the bottom.
@@ -64,7 +68,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
 
 **Portrait:** stacked, with the cook panel on top and the scaling list below.
 
-**Reset batch** clears progress and puts amounts back to the base yield. Confirm only if progress is more than 0.
+**Reset batch** clears progress, puts amounts back to the base yield and empties the units box. Confirm only if progress is more than 0.
 
 **Persistence:** each recipe's factor and progress are saved, so reopening the app resumes the batch.
 
@@ -83,7 +87,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
   - 2000 g and over: 50 g
   - The anchor shows exactly what was typed.
 - **Display:** always grams, everywhere (inputs, cook mode, the Next line). A plain number with no thousands separator: `5000 g`, `1250 g`, `18 g`. Decimals only when the value has one (`8.5 g`), at most 2. **No kg, ml or L.** Inputs accept grams only. Keep this in one formatter.
-- Inputs use `inputmode="decimal"`, not `type="number"`. Accept a comma as the decimal separator. Ignore empty or zero values, and keep the last valid factor.
+- Inputs use `inputmode="decimal"`, not `type="number"`. Accept a comma as the decimal separator. Ignore empty or zero values, and keep the last valid factor. The one exception is the units box: empty means the base recipe (section 4.3).
 - Optional "Total / Per bucket" toggle: amount ÷ `batchBuckets`, with the same rounding (open question 3).
 
 ## 6. Data format: `recipes.json`

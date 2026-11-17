@@ -597,13 +597,7 @@ button {
 }
 
 .scale-units__label {
-	display: flex;
-	align-items: baseline;
-	gap: var(--space-3);
 	font-size: var(--text-large);
-}
-
-.scale-units__word {
 	font-weight: 700;
 }
 

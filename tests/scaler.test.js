@@ -26,6 +26,22 @@ test('starts at the base yield', () => {
 	assert.equal(s.grams(0), 5000);
 	assert.equal(s.format(0), '5000 g');
 	assert.equal(s.format(1), '1500 g');
+	assert.equal(s.isBase, true);
+});
+
+test('typing units leaves the base state, even when it equals the base yield', () => {
+	const s = new Scaler(recipe);
+	s.setUnits('100');
+	assert.equal(s.isBase, false);
+	assert.equal(s.isAnchor('units'), true);
+	assert.equal(s.factor, 1);
+});
+
+test('typing an ingredient amount leaves the base state', () => {
+	const s = new Scaler(recipe);
+	s.setIngredientAmount(0, '2500');
+	assert.equal(s.isBase, false);
+	assert.equal(s.units(), 50);
 });
 
 test('scales by units', () => {
@@ -156,7 +172,8 @@ test('reset puts the factor back to the base yield', () => {
 	s.setIngredientAmount(2, '45');
 	s.reset();
 	assert.equal(s.factor, 1);
-	assert.equal(s.isAnchor('units'), true);
+	assert.equal(s.isBase, true);
+	assert.equal(s.isAnchor('units'), false);
 });
 
 test('restores saved state and ignores a bad anchor', () => {
@@ -166,7 +183,10 @@ test('restores saved state and ignores a bad anchor', () => {
 	assert.equal(restored.factor, 0.5);
 	assert.equal(restored.isAnchor('ingredient', 3), true);
 
+	const base = new Scaler(recipe, new Scaler(recipe).toJSON());
+	assert.equal(base.isBase, true);
+
 	const bad = new Scaler(recipe, { factor: -2, anchor: { kind: 'ingredient', index: 99 } });
 	assert.equal(bad.factor, 1);
-	assert.equal(bad.isAnchor('units'), true);
+	assert.equal(bad.isBase, true);
 });

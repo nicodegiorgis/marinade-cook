@@ -77,7 +77,7 @@ export function parseAmount(text) {
 export class Scaler {
 	#recipe;
 	#factor = 1;
-	#anchor = { kind: 'units', index: -1 };
+	#anchor = { kind: 'base', index: -1 };
 
 	/**
 	 * @param {{yieldUnits: number, ingredients: Array<{grams: number}>}} recipe Validated recipe.
@@ -103,10 +103,19 @@ export class Scaler {
 
 	/**
 	 * The box the factor came from, so views can leave it alone.
-	 * @returns {{kind: string, index: number}} kind is 'units' or 'ingredient'.
+	 * @returns {{kind: string, index: number}} kind is 'base', 'units' or 'ingredient'.
 	 */
 	get anchor() {
 		return { ...this.#anchor };
+	}
+
+	/**
+	 * Whether nothing has been typed yet (or the batch was reset), so the
+	 * recipe is at its base amounts and the units box stays empty.
+	 * @returns {boolean}
+	 */
+	get isBase() {
+		return this.#anchor.kind === 'base';
 	}
 
 	/**
@@ -147,7 +156,7 @@ export class Scaler {
 	 */
 	reset() {
 		this.#factor = 1;
-		this.#anchor = { kind: 'units', index: -1 };
+		this.#anchor = { kind: 'base', index: -1 };
 	}
 
 	/**
@@ -183,7 +192,7 @@ export class Scaler {
 
 	/**
 	 * Whether a box is the one the factor came from.
-	 * @param {string} kind 'units' or 'ingredient'.
+	 * @param {string} kind 'base', 'units' or 'ingredient'.
 	 * @param {number} [index=-1] Ingredient position, for kind 'ingredient'.
 	 * @returns {boolean}
 	 */
@@ -207,7 +216,7 @@ export class Scaler {
 		if (anchor === null || typeof anchor !== 'object') {
 			return false;
 		}
-		if (anchor.kind === 'units') {
+		if (anchor.kind === 'units' || anchor.kind === 'base') {
 			return anchor.index === -1;
 		}
 		return anchor.kind === 'ingredient'
