@@ -4,7 +4,7 @@
  * inline errors. Used by the first-run screen and the settings panel.
  */
 
-import { el, clear } from './dom.js';
+import { el, clear, Dom } from './dom.js';
 
 /**
  * Styled file input plus an error list.
@@ -84,10 +84,11 @@ export class FilePicker {
 		const shown = errors.slice(0, 20);
 		const more = errors.length - shown.length;
 		clear(this.#errors);
-		this.#errors.append(
+		// Dom.append skips null; native append() would print it as the text "null".
+		Dom.append(this.#errors, [
 			el('p', { className: 'file-picker__errors-title', text: 'Import failed. Your saved recipes were not changed.' }),
 			el('ul', { className: 'file-picker__error-list' }, shown.map((e) => el('li', { text: e }))),
 			more > 0 ? el('p', { text: `And ${more} more problems.` }) : null,
-		);
+		]);
 	}
 }
