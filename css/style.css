@@ -88,7 +88,7 @@
 }
 
 /*
- * Dark roles. Auto follows the iPad through the media query; the settings
+ * Dark roles. Auto follows the device through the media query; the settings
  * panel can force a theme with data-theme on <html>. Keep both dark blocks
  * identical.
  */

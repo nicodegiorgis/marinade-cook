@@ -1,7 +1,7 @@
 /**
  * wake-lock.js
  * Keeps the screen on while a recipe page is open, where the browser allows it.
- * Fails silently: older iPads simply dim as usual.
+ * Fails silently: older devices simply dim as usual.
  */
 
 /**

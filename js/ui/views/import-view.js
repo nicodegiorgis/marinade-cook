@@ -19,7 +19,7 @@ export class ImportView {
 	 * @param {object} deps Dependencies.
 	 * @param {import('../../data/recipe-store.js').RecipeStore} deps.recipeStore Recipe store.
 	 * @param {function(): void} deps.onImported Called after a successful import.
-	 * @param {boolean} deps.showInstallHint True in a plain Safari tab on iPad.
+	 * @param {boolean} deps.showInstallHint True in a plain Safari tab on iPad or iPhone.
 	 */
 	constructor(container, deps) {
 		this.#container = container;
@@ -48,7 +48,7 @@ export class ImportView {
 			el('main', { className: 'import-view' }, [
 				el('div', { className: 'import-view__icon' }, [Dom.icon(ICONS.recipe)]),
 				el('h1', { className: 'import-view__title', text: 'Add your recipes' }),
-				el('p', { className: 'import-view__line', text: 'Pick recipes.json from Files. It stays on this iPad.' }),
+				el('p', { className: 'import-view__line', text: 'Pick your recipes.json file. It stays on this device.' }),
 				hint,
 				picker.element,
 			]),
