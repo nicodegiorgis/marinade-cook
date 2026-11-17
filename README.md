@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/nicodegiorgis/marinade-cook/actions/workflows/test.yml/badge.svg)](https://github.com/nicodegiorgis/marinade-cook/actions/workflows/test.yml)
 
-An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the device.
+An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from your own recipe file (a .json file) that never leaves the device.
 
 The full product spec is in [docs/spec.md](docs/spec.md).
 
@@ -38,24 +38,30 @@ Portrait: cook mode on top, amounts below.
 
 ## Public code, private data
 
-This repo is public and contains **only the app**. The real recipes live in `recipes.json`, which the owner keeps on their own devices and moves to the device directly (for example by AirDrop or a USB cable). The app stores imported recipes only in that device's local browser storage and makes no network requests at all.
+This repo is public and contains **only the app**. It ships with no recipes: you supply your own recipe file (a .json file), keep it on your own devices and move it to the device directly (for example by AirDrop or a USB cable). Any file name works, because the app checks only the contents, not the name. The app stores imported recipes only in that device's local browser storage and makes no network requests at all.
 
-- `recipes.json` and `*.private.json` are gitignored. Never commit them.
+- If you clone the repo, keep your private recipe file outside the repo folder, or name it `recipes.json` or `something.private.json`. Those two patterns are gitignored, so the file is never committed. Any other name inside the folder is not protected.
 - `sample-recipes.json` holds made-up recipes for development and testing.
+
+### Privacy limits
+
+- Recipes are stored only in this browser's local storage on the device and are never sent anywhere.
+- Browser storage belongs to a site's origin. On GitHub Pages every project site under the same account shares one origin (`username.github.io`), so another site hosted under the same account could read the stored recipes. If you host this app next to other sites, serve it from its own origin, for example a custom domain or a separate GitHub organisation.
+- The Content Security Policy is set with a meta tag, which cannot restrict who may embed the app in a frame, and GitHub Pages cannot send that header. The app has no sensitive actions, so the worst case is a tricked tap on **Reset batch**, which asks for confirmation once progress exists.
 
 ## Install
 
-1. On GitHub: **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`.
-2. On the device, open `https://<username>.github.io/marinade-cook/` in the browser.
-3. Install it as an app:
+1. On the device, open the live app in the browser: https://nicodegiorgis.github.io/marinade-cook/
+2. Install it as an app:
    - **iPad or iPhone (Safari):** tap Share → **Add to Home Screen**.
    - **Android (Chrome):** open the menu → **Add to Home screen** or **Install app**.
    - **Computer (Chrome or Edge):** click the install icon in the address bar.
-4. Open the installed app and tap **Import recipes** to pick `recipes.json`.
+3. Get a recipe file ready. The app comes with no recipes. You need a recipe file in the format described under [Recipe file format](#recipe-file-format) below. To try the app first, download [`sample-recipes.json`](sample-recipes.json) from this repo (made-up data) and import that.
+4. Open the installed app and tap **Import recipes** to pick your recipe file.
    On iPad and iPhone, the Home Screen app has its own storage, separate from Safari, so importing in a Safari tab does not carry over. Import from the Home Screen icon.
 5. Turn on airplane mode (or go offline) and check it still opens.
 
-Uninstalling the app erases its recipes. Keep `recipes.json` somewhere safe so you can import it again.
+Uninstalling the app erases its recipes. Keep your recipe file somewhere safe so you can import it again.
 
 ## Using it
 
@@ -139,3 +145,11 @@ sample-recipes.json   made-up data
 ### Releasing
 
 Before a release, run the `release` skill (`.claude/skills/release/`). It checks for private data, runs the tests, checks `APP_SHELL`, and bumps `CACHE_VERSION` in `sw.js` together with `APP_VERSION` in `js/app-version.js`. When you add, rename or remove an app file, update `APP_SHELL` or the app breaks offline.
+
+## Deploy your own copy
+
+1. Fork this repo to your own GitHub account.
+2. On GitHub: **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`.
+3. Your copy is then live at `https://<username>.github.io/marinade-cook/`. Install it with the steps under [Install](#install).
+
+Read [Privacy limits](#privacy-limits) first if the same account hosts other sites.
