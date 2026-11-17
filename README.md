@@ -26,7 +26,7 @@ Deleting the app from the Home Screen erases its recipes. Keep `recipes.json` so
 
 - **List:** every recipe A to Z. Search filters as you type.
 - **Recipe page:** type a number of units, **or** the amount you have of any ingredient, and every other amount rescales. Amounts are rounded up (1 g under 20 g, 5 g up to 199 g, 10 g up to 1999 g, 50 g from 2000 g). The box you typed in keeps your exact value.
-- When you tap an ingredient box it switches to grams, so typing `1200` always means 1200 g. You can also type `1,2 kg`.
+- Every amount is in grams, shown as a plain number (`5000 g`, `1250 g`). Typing `1200` in an ingredient box means 1200 g. A comma works as the decimal point.
 - **Cook mode:** tap **Poured** after each ingredient. **Back** steps back one. Tapping an ingredient's name in the list jumps straight to it.
 - **Reset batch** clears progress and returns to the base yield. Progress and amounts are saved per recipe, so closing the app resumes the batch.
 - **Settings** (the menu button on the list) shows the recipe count, import date and app version, and lets you import a new file.
@@ -41,7 +41,7 @@ These answer `docs/spec.md` section 12 for v1. Each one is easy to change later.
 | UI language | English | Text strings in `js/ui/views/` |
 | Per bucket | Full batch amounts only. No per-bucket toggle yet. `batchBuckets` is validated and kept but not used. | Would be a display option in `RecipeView` using `Scaler` |
 | Lock amounts while cooking | No. Amounts stay editable during a batch. | Input handlers in `js/ui/views/recipe-view.js` |
-| kg or g | kg from 1000 g, up to 2 decimals (the box you typed in can show 3). | `splitGrams` in `js/core/scaler.js`, the only formatter |
+| kg or g | Decided: always g, no kg anywhere. Decimals only when the value has one. | `formatGrams` in `js/core/scaler.js`, the only formatter |
 
 ## Recipe file format
 

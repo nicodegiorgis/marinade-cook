@@ -58,7 +58,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
 **Right panel: cook mode**
 - "Step 2 of 8" and a thin progress bar.
 - The current ingredient's name, large. Its amount, **very large** (readable from about a metre away).
-- "Next: sugar 1.5 kg".
+- "Next: sugar 1500 g". The name, amount and Next line sit together just above the buttons.
 - A smaller **Back** (←) button and a big **Poured →** button.
 - At the end: "Batch complete", the units made, and **Reset batch**.
 
@@ -82,7 +82,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
   - 200 to 1999 g: 10 g
   - 2000 g and over: 50 g
   - The anchor shows exactly what was typed.
-- **Display:** g. From 1000 g up, kg with up to 2 decimals and no trailing zeros (`1.5 kg`). **No ml or L.** Keep this in one formatter.
+- **Display:** always grams, everywhere (inputs, cook mode, the Next line). A plain number with no thousands separator: `5000 g`, `1250 g`, `18 g`. Decimals only when the value has one (`8.5 g`), at most 2. **No kg, ml or L.** Inputs accept grams only. Keep this in one formatter.
 - Inputs use `inputmode="decimal"`, not `type="number"`. Accept a comma as the decimal separator. Ignore empty or zero values, and keep the last valid factor.
 - Optional "Total / Per bucket" toggle: amount ÷ `batchBuckets`, with the same rounding (open question 3).
 
@@ -169,7 +169,7 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 - [ ] The first-run import works, and a bad file gives a clear error without overwriting data.
 - [ ] The list is A to Z, scrolls, and search filters it.
 - [ ] Units and ingredient anchors both rescale correctly, and the anchor keeps its typed value.
-- [ ] Rounding and kg formatting follow section 5. No ml anywhere.
+- [ ] Rounding and grams formatting follow section 5. No kg or ml anywhere.
 - [ ] Cook mode: Poured, Back, row jump, done and current states all work.
 - [ ] Batch complete and Reset batch work. Progress survives reopening the app.
 - [ ] Works offline after the first load.
@@ -184,7 +184,7 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 2. UI language: English or Spanish?
 3. Amounts per bucket, full batch, or switchable? Should cook mode go bucket by bucket?
 4. Lock amounts once cooking has started?
-5. kg from 1000 g, or always g?
+5. ~~kg from 1000 g, or always g?~~ **Decided: always g** (see section 5).
 
 ## 13. Later (not v1)
 
