@@ -3,6 +3,16 @@
   "private": true,
   "type": "module",
   "description": "Offline app for scaling and cooking marinade batches",
+  "license": "MIT",
+  "author": "Nicolas Degiorgis (https://github.com/nicodegiorgis)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicodegiorgis/marinade-cook.git"
+  },
+  "homepage": "https://nicodegiorgis.github.io/marinade-cook/",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "node --test"
   }
