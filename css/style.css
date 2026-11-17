@@ -1,0 +1,865 @@
+/**
+ * style.css
+ * All styles for Marinade Cook. Sections: tokens, base, layout, components,
+ * views, utilities. Only the palette tokens from docs/spec.md section 9 hold colours.
+ */
+
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+
+:root {
+	color-scheme: light dark;
+
+	/* Palette (docs/spec.md section 9) */
+	--color-cream: #F8F1E6;
+	--color-butter: #F9DE85;
+	--color-orange: #E9943F;
+	--color-purple: #4A2A87;
+	--color-ink: #241B4E;
+	--color-charcoal: #474545;
+	--color-on-dark: #FFFFFF;
+
+	/* Roles, light theme */
+	--bg: var(--color-cream);
+	--text: var(--color-ink);
+	--text-muted: var(--color-charcoal);
+	--heading: var(--color-purple);
+	--header-bg: var(--color-butter);
+	--surface: var(--color-butter);
+	--surface-text: var(--color-ink);
+	--current-bg: var(--color-orange);
+	--current-text: var(--color-ink);
+	--done-bg: var(--color-cream);
+	--done-text: var(--color-charcoal);
+	--main-bg: var(--color-ink);
+	--main-text: var(--color-on-dark);
+	--secondary-border: var(--color-ink);
+	--secondary-text: var(--color-ink);
+	--input-bg: var(--color-on-dark);
+	--input-text: var(--color-ink);
+	--input-border: var(--color-charcoal);
+	--input-focus: var(--color-purple);
+	--focus-ring: var(--color-purple);
+	--icon: var(--color-purple);
+	--progress-track: var(--color-butter);
+	--progress-fill: var(--color-orange);
+	--error-border: var(--color-orange);
+	--line: var(--color-charcoal);
+
+	/* Sizes */
+	--tap-min: 64px;
+	--tap-main: 88px;
+	--tap-row: 56px;
+	--header-height: 80px;
+	--border: 2px;
+	--focus-width: 3px;
+	--radius-pill: 999px;
+	--radius-card: 16px;
+	--icon-size: 32px;
+
+	/* Spacing */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+
+	/* Type */
+	--font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--text-small: 16px;
+	--text-base: 20px;
+	--text-input: 24px;
+	--text-large: 28px;
+	--text-title: 32px;
+	--text-cook-name: clamp(32px, 4.5vw, 48px);
+	--text-cook-amount: clamp(64px, 10vw, 128px);
+	--text-cook-amount-portrait: clamp(64px, 12vw, 112px);
+
+	/* Widths */
+	/* Fits 6 digits (125000), since amounts are always grams. */
+	--amount-width: 9ch;
+	--units-width: 6ch;
+	--search-width: 360px;
+	--content-max: 1400px;
+	--dialog-width: 560px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: var(--color-ink);
+		--text: var(--color-butter);
+		--text-muted: var(--color-butter);
+		--heading: var(--color-butter);
+		--header-bg: var(--color-purple);
+		--surface: var(--color-purple);
+		--surface-text: var(--color-butter);
+		--current-bg: var(--color-orange);
+		--current-text: var(--color-ink);
+		--done-bg: var(--color-ink);
+		--done-text: var(--color-butter);
+		--main-bg: var(--color-butter);
+		--main-text: var(--color-ink);
+		--secondary-border: var(--color-butter);
+		--secondary-text: var(--color-butter);
+		--input-bg: var(--color-on-dark);
+		--input-text: var(--color-ink);
+		--input-border: var(--color-charcoal);
+		--input-focus: var(--color-purple);
+		--focus-ring: var(--color-butter);
+		--icon: var(--color-butter);
+		--progress-track: var(--color-purple);
+		--progress-fill: var(--color-orange);
+		--line: var(--color-butter);
+	}
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	font-size: var(--text-base);
+	line-height: 1.35;
+	-webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+p,
+ul,
+ol,
+dl,
+dd {
+	margin: 0;
+}
+
+h1,
+h2 {
+	color: var(--heading);
+	line-height: 1.15;
+}
+
+button,
+input {
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	touch-action: manipulation;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+:focus-visible {
+	outline: var(--focus-width) solid var(--focus-ring);
+	outline-offset: var(--focus-width);
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.app {
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	padding-left: env(safe-area-inset-left);
+	padding-right: env(safe-area-inset-right);
+}
+
+.app-header {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
+	min-height: var(--header-height);
+	padding: env(safe-area-inset-top) var(--space-5) 0;
+	padding-top: max(env(safe-area-inset-top), var(--space-2));
+	padding-bottom: var(--space-2);
+	background: var(--header-bg);
+	color: var(--surface-text);
+}
+
+.app-header__title {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: var(--text-title);
+}
+
+.app-header__title--recipe {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Split view: amounts left, cook mode right. Both panels scroll on their own. */
+.recipe-layout {
+	flex: 1 1 auto;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	grid-template-areas: 'scale cook';
+	height: calc(100vh - var(--header-height));
+	height: calc(100dvh - var(--header-height) - env(safe-area-inset-top));
+	min-height: 0;
+}
+
+@media (orientation: portrait) {
+	.recipe-layout {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: auto minmax(0, 1fr);
+		grid-template-areas: 'cook' 'scale';
+	}
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+.icon {
+	width: var(--icon-size);
+	height: var(--icon-size);
+	fill: currentColor;
+}
+
+.icon-button {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--tap-min);
+	height: var(--tap-min);
+	padding: 0;
+	border: var(--border) solid var(--secondary-border);
+	border-radius: var(--radius-pill);
+	background: transparent;
+	color: var(--secondary-text);
+}
+
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-height: var(--tap-min);
+	padding: 0 var(--space-6);
+	border: var(--border) solid transparent;
+	border-radius: var(--radius-pill);
+	font-size: var(--text-base);
+	font-weight: 700;
+	text-align: center;
+	touch-action: manipulation;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+}
+
+.button--main {
+	background: var(--main-bg);
+	color: var(--main-text);
+}
+
+.button--secondary {
+	background: transparent;
+	border-color: var(--secondary-border);
+	color: var(--secondary-text);
+}
+
+.button--small {
+	padding: 0 var(--space-5);
+	white-space: nowrap;
+}
+
+.button:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.input {
+	min-height: var(--tap-min);
+	padding: 0 var(--space-3);
+	border: var(--border) solid var(--input-border);
+	border-radius: var(--space-2);
+	background: var(--input-bg);
+	color: var(--input-text);
+	font-size: var(--text-input);
+}
+
+.input:focus {
+	border-color: var(--input-focus);
+	outline: var(--focus-width) solid var(--focus-ring);
+	outline-offset: 0;
+}
+
+.amount-input {
+	width: var(--amount-width);
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+}
+
+.file-picker {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+	width: 100%;
+}
+
+.file-picker__button {
+	position: relative;
+	min-height: var(--tap-main);
+	min-width: min(100%, 420px);
+	font-size: var(--text-large);
+}
+
+/* The real input stays in the label so a tap anywhere on the button opens Files. */
+.file-picker__input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	overflow: hidden;
+}
+
+.file-picker__button:focus-within {
+	outline: var(--focus-width) solid var(--focus-ring);
+	outline-offset: var(--focus-width);
+}
+
+.file-picker__errors:empty {
+	display: none;
+}
+
+.file-picker__errors {
+	width: 100%;
+	max-width: 720px;
+	padding: var(--space-4);
+	border: var(--border) solid var(--error-border);
+	border-radius: var(--radius-card);
+	text-align: left;
+}
+
+.file-picker__errors-title {
+	font-weight: 700;
+	margin-bottom: var(--space-2);
+}
+
+.file-picker__error-list {
+	padding-left: var(--space-5);
+	font-size: var(--text-small);
+}
+
+.update-banner {
+	position: fixed;
+	left: 50%;
+	bottom: max(env(safe-area-inset-bottom), var(--space-4));
+	z-index: 10;
+	transform: translateX(-50%);
+	min-height: var(--tap-min);
+	padding: 0 var(--space-6);
+	border: var(--border) solid var(--main-text);
+	border-radius: var(--radius-pill);
+	background: var(--main-bg);
+	color: var(--main-text);
+	font-weight: 700;
+}
+
+.wake-badge {
+	flex: 0 0 auto;
+	font-size: var(--text-small);
+	color: var(--surface-text);
+	white-space: nowrap;
+}
+
+/* ==========================================================================
+   Views
+   ========================================================================== */
+
+/* Import (first run) */
+
+.import-view {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-5);
+	padding: var(--space-7) var(--space-5);
+	text-align: center;
+}
+
+.import-view__icon .icon {
+	width: 96px;
+	height: 96px;
+	fill: var(--icon);
+}
+
+.import-view__title {
+	font-size: 40px;
+}
+
+.import-view__line {
+	font-size: var(--text-large);
+}
+
+.import-view__hint {
+	max-width: 640px;
+	padding: var(--space-4);
+	border-radius: var(--radius-card);
+	background: var(--surface);
+	color: var(--surface-text);
+}
+
+/* List */
+
+.search {
+	flex: 0 1 var(--search-width);
+	min-width: 0;
+}
+
+.search__input {
+	width: 100%;
+	border-radius: var(--radius-pill);
+	padding: 0 var(--space-5);
+}
+
+.list-view {
+	width: 100%;
+	max-width: var(--content-max);
+	margin: 0 auto;
+	padding: var(--space-5);
+	padding-bottom: max(env(safe-area-inset-bottom), var(--space-5));
+}
+
+.recipe-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--space-4);
+	padding: 0;
+	list-style: none;
+}
+
+@media (orientation: portrait) {
+	.recipe-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.recipe-grid__empty {
+	grid-column: 1 / -1;
+	padding: var(--space-6);
+	text-align: center;
+	color: var(--text-muted);
+}
+
+.recipe-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: var(--space-1);
+	width: 100%;
+	min-height: 112px;
+	padding: var(--space-4) var(--space-5);
+	border: 0;
+	border-radius: var(--radius-card);
+	background: var(--surface);
+	color: var(--surface-text);
+	text-align: left;
+}
+
+.recipe-card__name {
+	font-size: var(--text-large);
+	font-weight: 700;
+	overflow-wrap: anywhere;
+}
+
+.recipe-card__yield {
+	font-size: var(--text-small);
+}
+
+/* Settings dialog */
+
+.settings {
+	width: min(var(--dialog-width), calc(100vw - 2 * var(--space-5)));
+	padding: var(--space-5);
+	border: var(--border) solid var(--line);
+	border-radius: var(--radius-card);
+	background: var(--bg);
+	color: var(--text);
+}
+
+.settings::backdrop {
+	background: var(--color-ink);
+	opacity: 0.6;
+}
+
+.settings__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--space-4);
+}
+
+.settings__title {
+	font-size: var(--text-title);
+}
+
+.settings__facts {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: var(--space-2) var(--space-5);
+	margin-bottom: var(--space-5);
+}
+
+.settings__facts dt {
+	color: var(--text-muted);
+}
+
+.settings__facts dd {
+	font-weight: 700;
+}
+
+.settings__confirm {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	align-items: stretch;
+}
+
+.settings__confirm .file-picker__button {
+	min-width: 0;
+	width: 100%;
+}
+
+.settings__note {
+	margin-top: var(--space-5);
+	font-size: var(--text-small);
+	color: var(--text-muted);
+}
+
+/* Recipe page: scaling list */
+
+.scale-panel {
+	grid-area: scale;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	padding: var(--space-4) var(--space-5);
+	padding-bottom: max(env(safe-area-inset-bottom), var(--space-6));
+	border-right: var(--border) solid var(--line);
+}
+
+@media (orientation: portrait) {
+	.scale-panel {
+		border-right: 0;
+		border-top: var(--border) solid var(--line);
+	}
+}
+
+.scale-units {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	min-height: var(--tap-min);
+	padding: var(--space-2) var(--space-4);
+	margin-bottom: var(--space-4);
+	border-radius: var(--radius-card);
+	background: var(--surface);
+	color: var(--surface-text);
+}
+
+.scale-units__label {
+	font-size: var(--text-large);
+	font-weight: 700;
+}
+
+.scale-units .amount-input {
+	width: var(--units-width);
+}
+
+.scale-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	padding: 0;
+	list-style: none;
+}
+
+.scale-row {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	min-height: var(--tap-row);
+	padding: var(--space-1) var(--space-3) var(--space-1) 0;
+	border-radius: var(--radius-card);
+	background: var(--surface);
+	color: var(--surface-text);
+}
+
+.scale-row__name {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	min-width: 0;
+	min-height: var(--tap-row);
+	padding: var(--space-2) var(--space-3);
+	border: 0;
+	background: transparent;
+	color: inherit;
+	text-align: left;
+}
+
+.scale-row__step {
+	flex: 0 0 auto;
+	min-width: 2ch;
+	font-size: var(--text-small);
+	font-weight: 700;
+	text-align: right;
+}
+
+.scale-row__text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.scale-row__label {
+	font-size: var(--text-base);
+	font-weight: 700;
+	overflow-wrap: anywhere;
+}
+
+.scale-row__note {
+	font-size: var(--text-small);
+	font-style: italic;
+}
+
+.scale-row__amount {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+.scale-row__unit {
+	min-width: 2.2ch;
+	font-weight: 700;
+}
+
+.scale-row--current {
+	background: var(--current-bg);
+	color: var(--current-text);
+}
+
+.scale-row--done {
+	background: var(--done-bg);
+	color: var(--done-text);
+	outline: var(--border) solid var(--line);
+	outline-offset: calc(-1 * var(--border));
+}
+
+.scale-row--done .scale-row__label,
+.scale-row--done .scale-row__note {
+	text-decoration: line-through;
+}
+
+.scale-notes {
+	margin-top: var(--space-5);
+	padding: var(--space-4);
+	border: var(--border) solid var(--line);
+	border-radius: var(--radius-card);
+}
+
+.scale-notes__title {
+	font-size: var(--text-base);
+	margin-bottom: var(--space-2);
+}
+
+.scale-notes ul {
+	padding-left: var(--space-5);
+}
+
+/* Recipe page: cook mode */
+
+.cook-panel {
+	grid-area: cook;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow-y: auto;
+	padding: var(--space-5);
+	padding-bottom: max(env(safe-area-inset-bottom), var(--space-5));
+}
+
+.cook-panel__active,
+.cook-panel__done {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.cook-panel__meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.cook-panel__step {
+	font-size: var(--text-base);
+	font-weight: 700;
+	color: var(--text-muted);
+}
+
+.cook-panel__progress {
+	width: 100%;
+	height: 10px;
+	border: 0;
+	border-radius: var(--radius-pill);
+	background: var(--progress-track);
+	appearance: none;
+	-webkit-appearance: none;
+	overflow: hidden;
+}
+
+.cook-panel__progress::-webkit-progress-bar {
+	background: var(--progress-track);
+	border-radius: var(--radius-pill);
+}
+
+.cook-panel__progress::-webkit-progress-value {
+	background: var(--progress-fill);
+	border-radius: var(--radius-pill);
+}
+
+.cook-panel__progress::-moz-progress-bar {
+	background: var(--progress-fill);
+	border-radius: var(--radius-pill);
+}
+
+/* margin-top: auto pushes the group down to the buttons, leaving any spare space up top. */
+.cook-panel__current {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin-top: auto;
+}
+
+.cook-panel__name {
+	font-size: var(--text-cook-name);
+	overflow-wrap: anywhere;
+}
+
+/*
+ * line-height 1 let the "g" descender hang into the Next line. 1.2 keeps the
+ * whole glyph inside the box, and the margin adds clear space below it. The
+ * number never splits mid-digits; a very long amount wraps before " g".
+ */
+.cook-panel__amount {
+	font-size: var(--text-cook-amount);
+	font-weight: 800;
+	line-height: 1.2;
+	margin-bottom: var(--space-3);
+	font-variant-numeric: tabular-nums;
+	color: var(--text);
+}
+
+.cook-panel__note {
+	font-size: var(--text-large);
+	font-style: italic;
+}
+
+.cook-panel__next {
+	font-size: var(--text-large);
+	color: var(--text-muted);
+}
+
+/* Wide gap so Back is never hit by mistake when reaching for Poured. */
+.cook-panel__actions {
+	display: flex;
+	gap: var(--space-7);
+	align-items: stretch;
+}
+
+.cook-panel__back {
+	flex: 0 0 auto;
+}
+
+.cook-panel__pour {
+	flex: 1 1 auto;
+	min-height: var(--tap-main);
+	font-size: var(--text-title);
+}
+
+.cook-panel__done {
+	justify-content: center;
+}
+
+.cook-panel__done-title {
+	font-size: 48px;
+}
+
+.cook-panel__made {
+	font-size: var(--text-title);
+	margin-bottom: var(--space-5);
+}
+
+@media (orientation: portrait) {
+	.cook-panel {
+		overflow: visible;
+	}
+
+	.cook-panel__current {
+		margin-top: 0;
+	}
+
+	.cook-panel__amount {
+		font-size: var(--text-cook-amount-portrait);
+	}
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
+}

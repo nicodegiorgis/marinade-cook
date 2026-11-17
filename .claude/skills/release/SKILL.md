@@ -13,7 +13,7 @@ Run these in order, and stop and report if any step fails.
    git diff --cached --name-only | grep -E 'recipes\.json$|\.private\.json$' && echo "STOP: private data staged"
    ```
    Also confirm that `.gitignore` still lists `recipes.json` and `*.private.json`.
-2. **Tests.** Run `node --test tests/` and make sure every test passes.
+2. **Tests.** Run `node --test` and make sure every test passes.
 3. **Shell list.** Compare `APP_SHELL` in `sw.js` with the real files (html, css, js, manifest, icons). Add anything missing and remove anything deleted.
 4. **Bump the version.** Increase `CACHE_VERSION` in `sw.js` by one (`v3` to `v4`), and update the app version shown in the settings panel to match.
 5. **Safety scan.**
