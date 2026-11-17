@@ -21,7 +21,9 @@ const ROUNDING_BANDS = [
  * @returns {number} Rounded amount in grams.
  */
 export function roundUpGrams(grams) {
-	const band = ROUNDING_BANDS.find((b) => grams < b.below);
+	// Falls back to the last band so Infinity or NaN can never leave band undefined.
+	const band = ROUNDING_BANDS.find((b) => grams < b.below)
+		?? ROUNDING_BANDS[ROUNDING_BANDS.length - 1];
 	const rounded = Math.ceil(grams / band.step - EPSILON) * band.step;
 	return Math.max(rounded, band.step);
 }
@@ -85,7 +87,7 @@ export class Scaler {
 	 */
 	constructor(recipe, state = {}) {
 		this.#recipe = recipe;
-		if (Number.isFinite(state.factor) && state.factor > 0) {
+		if (this.#isUsableFactor(state.factor)) {
 			this.#factor = state.factor;
 		}
 		if (this.#isValidAnchor(state.anchor)) {
@@ -128,7 +130,11 @@ export class Scaler {
 		if (parsed === null || parsed.unit !== null) {
 			return false;
 		}
-		this.#factor = parsed.value / this.#recipe.yieldUnits;
+		const factor = parsed.value / this.#recipe.yieldUnits;
+		if (!this.#isUsableFactor(factor)) {
+			return false;
+		}
+		this.#factor = factor;
 		this.#anchor = { kind: 'units', index: -1 };
 		return true;
 	}
@@ -145,7 +151,11 @@ export class Scaler {
 		if (ingredient === undefined || parsed === null) {
 			return false;
 		}
-		this.#factor = parsed.value / ingredient.grams;
+		const factor = parsed.value / ingredient.grams;
+		if (!this.#isUsableFactor(factor)) {
+			return false;
+		}
+		this.#factor = factor;
 		this.#anchor = { kind: 'ingredient', index };
 		return true;
 	}
@@ -212,6 +222,22 @@ export class Scaler {
 	 */
 	toJSON() {
 		return { factor: this.#factor, anchor: this.anchor };
+	}
+
+	/**
+	 * A factor is usable when it is positive and every scaled amount, plus the
+	 * units count, stays a finite number. A huge typed value or a damaged save
+	 * is then ignored like any other bad input, instead of breaking the page.
+	 * @param {*} factor Candidate factor.
+	 * @returns {boolean}
+	 */
+	#isUsableFactor(factor) {
+		if (typeof factor !== 'number' || !Number.isFinite(factor) || factor <= 0) {
+			return false;
+		}
+		const amounts = this.#recipe.ingredients.map((ing) => ing.grams);
+		const largest = Math.max(this.#recipe.yieldUnits, ...amounts);
+		return Number.isFinite(largest * factor);
 	}
 
 	/**

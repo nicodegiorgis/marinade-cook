@@ -27,7 +27,7 @@ export class ProgressStore {
 	get(recipeId) {
 		const all = this.#readAll();
 		const entry = all[recipeId];
-		return entry !== null && typeof entry === 'object' ? entry : {};
+		return entry !== null && typeof entry === 'object' && !Array.isArray(entry) ? entry : {};
 	}
 
 	/**
@@ -59,14 +59,26 @@ export class ProgressStore {
 	}
 
 	/**
+	 * Reads every saved entry into an object with no prototype. Recipe ids come
+	 * from the imported file, so an id like "__proto__" must stay a plain key
+	 * instead of reaching Object.prototype.
 	 * @returns {Object<string, object>}
 	 */
 	#readAll() {
+		const all = Object.create(null);
+		let parsed;
 		try {
-			const parsed = JSON.parse(this.#storage.getItem(STORAGE_KEY));
-			return parsed !== null && typeof parsed === 'object' ? parsed : {};
+			parsed = JSON.parse(this.#storage.getItem(STORAGE_KEY));
 		} catch {
-			return {};
+			return all;
 		}
+		if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+			return all;
+		}
+		// JSON.parse makes "__proto__" an own key, so copying keeps it.
+		for (const [id, entry] of Object.entries(parsed)) {
+			all[id] = entry;
+		}
+		return all;
 	}
 }
