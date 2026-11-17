@@ -21,11 +21,13 @@ A tablet (or phone, or computer) sits on the kitchen bench and works like a cook
 
 ## 3. Privacy model
 
-- The repo contains **only the app**. The real data is `recipes.json`, which the owner keeps on their own devices and moves to the device directly (for example by AirDrop or a USB cable).
+- The repo contains **only the app** and ships with no recipes. The user supplies their own recipe file (a .json file), keeps it on their own devices and moves it to the device directly (for example by AirDrop or a USB cable). Any file name works; only the contents are checked.
 - The user taps **Import recipes**. Data is stored **only in local browser storage on that device**. Nothing is sent anywhere.
 - The README explains that public code and private data are kept apart on purpose.
 - A strict CSP meta tag: `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'`. No inline scripts or inline styles.
 - A failed import shows a clear error and keeps the existing data.
+- **Limit, shared origin:** browser storage belongs to the origin. On GitHub Pages every project site under one account shares `username.github.io`, so another site under the same account could read the stored recipes. Hosting next to other sites needs its own origin (a custom domain or a separate GitHub organisation).
+- **Limit, framing:** a meta tag CSP cannot set `frame-ancestors`, and GitHub Pages cannot send that header. The app has no sensitive actions; the worst case is a tricked tap on Reset batch, which confirms once progress exists.
 
 ## 4. Screens
 
@@ -161,13 +163,17 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 - **Theme setting** in the settings panel: **Auto** (follows the device's light or dark setting), **Light**, or **Dark**. The default is Auto. The choice is saved locally on the device and applies straight away. Light and Dark use the same palette tokens as above; Dark forces the dark-mode token set even when the device is in light mode, and Light the reverse.
 - UI text is in English.
 
-## 10. Deployment (for the README)
+## 10. Install and deployment (for the README)
 
-1. **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`.
-2. On the device, open `https://<username>.github.io/marinade-cook/` in the browser.
-3. Install it: Share → **Add to Home Screen** on iPad or iPhone (Safari), **Install app** on Android (Chrome), or the install icon in the address bar on a computer (Chrome or Edge).
-4. Open the installed app and import `recipes.json`. On iPad and iPhone, import from the Home Screen icon, not a Safari tab.
-5. Test in airplane mode.
+Install, written for visitors:
+
+1. On the device, open the live app: https://nicodegiorgis.github.io/marinade-cook/
+2. Install it: Share → **Add to Home Screen** on iPad or iPhone (Safari), **Add to Home screen** or **Install app** on Android (Chrome), or the install icon in the address bar on a computer (Chrome or Edge).
+3. Get a recipe file ready. The app comes with no recipes: use your own recipe file in the section 6 format, or `sample-recipes.json` (made-up data) to try it first.
+4. Open the installed app and import your recipe file. On iPad and iPhone, import from the Home Screen icon, not a Safari tab.
+5. Turn on airplane mode (or go offline) and check it still opens.
+
+Deploy your own copy (a separate README section, after the install steps): fork the repo, then **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`. The copy is live at `https://<username>.github.io/marinade-cook/`.
 
 ## 11. Acceptance checklist
 
