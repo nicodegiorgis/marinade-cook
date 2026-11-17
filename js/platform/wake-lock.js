@@ -9,6 +9,7 @@
  */
 export class WakeLock {
 	#sentinel = null;
+	#pending = null;
 	#wanted = false;
 	#listener = () => {};
 	#visibilityHandler = () => {
@@ -84,6 +85,20 @@ export class WakeLock {
 		if (!('wakeLock' in navigator) || this.active) {
 			return;
 		}
+		// Share one in-flight request, so two quick calls can never take two locks
+		// and leave one that nothing releases.
+		if (this.#pending === null) {
+			this.#pending = this.#acquire().finally(() => {
+				this.#pending = null;
+			});
+		}
+		await this.#pending;
+	}
+
+	/**
+	 * @returns {Promise<void>}
+	 */
+	async #acquire() {
 		try {
 			const sentinel = await navigator.wakeLock.request('screen');
 			if (!this.#wanted) {
@@ -91,7 +106,12 @@ export class WakeLock {
 				return;
 			}
 			this.#sentinel = sentinel;
-			sentinel.addEventListener('release', () => this.#onChange(false));
+			sentinel.addEventListener('release', () => {
+				// An old lock's late release event must not hide the badge for a newer one.
+				if (this.#sentinel === sentinel) {
+					this.#onChange(false);
+				}
+			});
 			this.#onChange(true);
 		} catch {
 			// Denied or unsupported (low battery mode, old iOS): carry on without it.

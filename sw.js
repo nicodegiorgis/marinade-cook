@@ -5,7 +5,7 @@
  * recipe data, which lives only in local storage after import.
  */
 
-const CACHE_VERSION = 'marinade-cook-v3';
+const CACHE_VERSION = 'marinade-cook-v4';
 
 /** Every file the app needs, relative so it works under the GitHub Pages subpath. */
 const APP_SHELL = [
@@ -39,7 +39,10 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
 	event.waitUntil(
-		caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)),
+		// cache: 'reload' skips the HTTP cache, so a new version never stores an old file.
+		caches.open(CACHE_VERSION).then((cache) => {
+			return cache.addAll(APP_SHELL.map((url) => new Request(url, { cache: 'reload' })));
+		}),
 	);
 });
 

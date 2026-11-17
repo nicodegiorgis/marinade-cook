@@ -231,3 +231,22 @@ test('restores saved state and ignores a bad anchor', () => {
 	assert.equal(bad.factor, 1);
 	assert.equal(bad.isBase, true);
 });
+
+test('ignores a value so big that an amount would overflow, and keeps the last factor', () => {
+	const huge = `1${'0'.repeat(307)}`;
+	const s = new Scaler(recipe);
+	assert.equal(s.setUnits('200'), true);
+	assert.equal(s.setUnits(huge), false);
+	assert.equal(s.setIngredientAmount(3, huge), false);
+	assert.equal(s.factor, 2);
+	assert.equal(s.format(0), '10000 g');
+
+	const restored = new Scaler(recipe, { factor: 1e306, anchor: { kind: 'units', index: -1 } });
+	assert.equal(restored.factor, 1);
+	assert.doesNotThrow(() => restored.format(0));
+});
+
+test('rounding never throws on a non-finite amount', () => {
+	assert.doesNotThrow(() => roundUpGrams(Infinity));
+	assert.doesNotThrow(() => roundUpGrams(Number.NaN));
+});
