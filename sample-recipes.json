@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "source": "Made-up sample data for development and tests",
+  "unit": "g",
+  "batchBuckets": 2,
+  "recipes": [
+    {
+      "id": "test-marinade-a",
+      "name": "Test Marinade A",
+      "yieldUnits": 100,
+      "ingredients": [
+        { "name": "Oil", "grams": 5000 },
+        { "name": "Sugar", "grams": 1500 },
+        { "name": "Salt", "grams": 180 },
+        { "name": "Garlic paste", "grams": 640 },
+        { "name": "Star seasoning", "grams": 18, "note": "remove before storing" },
+        { "name": "Lemon juice", "grams": 1250 }
+      ],
+      "notes": ["Method: mix everything cold", "Label with today's date"]
+    },
+    {
+      "id": "sample-smoky-glaze",
+      "name": "Sample Smoky Glaze",
+      "yieldUnits": 40,
+      "ingredients": [
+        { "name": "Tomato base", "grams": 2400 },
+        { "name": "Brown sugar", "grams": 600 },
+        { "name": "Smoked paprika", "grams": 45 },
+        { "name": "Vinegar", "grams": 300, "note": ["add slowly", "stir between pours"] },
+        { "name": "Chilli flakes", "grams": 7.5 }
+      ],
+      "notes": "Simmer for ten minutes, then cool before storing"
+    },
+    {
+      "id": "demo-herb-oil",
+      "name": "demo herb oil",
+      "yieldUnits": 25,
+      "ingredients": [
+        { "name": "Olive oil", "grams": 2000 },
+        { "name": "Parsley", "grams": 150 },
+        { "name": "Pepper", "grams": 12 }
+      ]
+    },
+    {
+      "id": "practice-citrus-brine",
+      "name": "Practice Citrus Brine",
+      "yieldUnits": 60,
+      "ingredients": [
+        { "name": "Water", "grams": 8000 },
+        { "name": "Salt", "grams": 480 },
+        { "name": "Orange peel", "grams": 95 },
+        { "name": "Bay leaves", "grams": 4, "note": "fish out after soaking" }
+      ],
+      "notes": ["Dissolve the salt fully before adding peel"]
+    }
+  ]
+}
