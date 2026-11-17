@@ -61,7 +61,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
 
 **Right panel: cook mode**
 - "Step 2 of 8" and a thin progress bar.
-- The current ingredient's name, large. Its amount, **very large** (readable from about a metre away).
+- The current ingredient's name, large. Its amount, **very large** (readable from about a metre away). The amount never touches the Next line, at any length and in both orientations.
 - "Next: sugar 1500 g". The name, amount and Next line sit together just above the buttons.
 - A smaller **Back** (←) button and a big **Poured →** button.
 - At the end: "Batch complete", the units made, and **Reset batch**.

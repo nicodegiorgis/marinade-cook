@@ -780,11 +780,16 @@ button {
 	overflow-wrap: anywhere;
 }
 
+/*
+ * line-height 1 let the "g" descender hang into the Next line. 1.2 keeps the
+ * whole glyph inside the box, and the margin adds clear space below it. The
+ * number never splits mid-digits; a very long amount wraps before " g".
+ */
 .cook-panel__amount {
-	overflow-wrap: anywhere;
 	font-size: var(--text-cook-amount);
 	font-weight: 800;
-	line-height: 1;
+	line-height: 1.2;
+	margin-bottom: var(--space-3);
 	font-variant-numeric: tabular-nums;
 	color: var(--text);
 }
