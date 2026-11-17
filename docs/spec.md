@@ -135,7 +135,24 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 
 - Tap targets: buttons at least 64 px tall. **Poured** around 88 px or more, full panel width. List rows at least 56 px. A wide gap between Back and Poured.
 - Text: amount boxes at least 22 px, and the cook-mode amount at least 64 px.
-- High contrast, flat and plain. No gradients and no decorative colour. One accent colour for the current ingredient and the main button.
+- High contrast, flat and plain. No gradients, no shadows.
+- **Colour palette** (warm yellow and deep purple, chosen by the owner):
+
+  | Token | Hex | Use |
+  |---|---|---|
+  | `--color-cream` | `#F8F1E6` | Page background |
+  | `--color-butter` | `#F9DE85` | Header bar, cards, list rows |
+  | `--color-orange` | `#E9943F` | Current ingredient highlight, progress bar fill |
+  | `--color-purple` | `#4A2A87` | Headings, accents, focus ring, icons |
+  | `--color-ink` | `#241B4E` | Body text, main **Poured** button background |
+  | `--color-charcoal` | `#474545` | Secondary text, borders |
+  | `--color-on-dark` | `#FFFFFF` | Text on ink or purple buttons |
+
+  - Main buttons: `--color-ink` background, white text, fully rounded (pill) corners.
+  - Secondary buttons (Back, Reset): transparent, with a 2 px `--color-ink` border, ink text, pill corners.
+  - Inputs: white background, 2 px `--color-charcoal` border, a `--color-purple` border on focus.
+  - Done rows: strikethrough in `--color-charcoal`. Current row: `--color-orange` background with ink text.
+  - Dark mode: `--color-ink` page background, butter-yellow text, purple surfaces, and the main button in butter with ink text. Check every text and background pair against WCAG AA (at least 4.5:1).
 - Follow the system light or dark theme. UI text is in English.
 
 ## 10. Deployment (for the README)

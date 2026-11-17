@@ -11,7 +11,8 @@ paths:
 - Indent with tabs.
 - Put every colour, size, and spacing value in custom properties on `:root`, with dark mode overrides under `@media (prefers-color-scheme: dark)`.
 - Use class names, not IDs or element chains, for styling. Name classes in plain kebab-case by component (`.cook-panel`, `.cook-panel__amount`).
-- Flat and plain: no gradients, no shadows beyond a focus ring, and one accent colour.
+- Flat and plain: no gradients, and no shadows beyond a focus ring.
+- **Use only the palette tokens in `docs/spec.md` section 9** (`--color-cream`, `--color-butter`, `--color-orange`, `--color-purple`, `--color-ink`, `--color-charcoal`, `--color-on-dark`). No other hex values anywhere in the CSS. Buttons use pill corners (`border-radius: 999px`).
 - Layout: CSS grid for the split view, with orientation handled by `@media (orientation: portrait)`.
 - Tap targets: use the sizes in `docs/spec.md` section 9 as tokens (`--tap-min: 64px`, `--tap-main: 88px`).
 - Buttons get `touch-action: manipulation` and `user-select: none`.
