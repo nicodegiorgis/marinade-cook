@@ -24,7 +24,8 @@ test('starts at the base yield', () => {
 	assert.equal(s.factor, 1);
 	assert.equal(s.units(), 100);
 	assert.equal(s.grams(0), 5000);
-	assert.equal(s.format(1), '1.5 kg');
+	assert.equal(s.format(0), '5000 g');
+	assert.equal(s.format(1), '1500 g');
 });
 
 test('scales by units', () => {
@@ -44,16 +45,23 @@ test('scales by an anchor ingredient and the anchor keeps its exact value', () =
 	assert.equal(s.setIngredientAmount(0, '1234'), true);
 	assert.equal(s.isAnchor('ingredient', 0), true);
 	assert.equal(s.grams(0), 1234);
-	assert.equal(s.format(0), '1.234 kg');
+	assert.equal(s.format(0), '1234 g');
 	// 1500 * 0.2468 = 370.2, rounded up to the next 10 g
 	assert.equal(s.grams(1), 380);
 });
 
-test('anchor ingredient accepts kg', () => {
+test('anchor keeps a typed decimal', () => {
 	const s = new Scaler(recipe);
-	s.setIngredientAmount(1, '0,75 kg');
+	s.setIngredientAmount(3, '8,5');
+	assert.equal(s.format(3), '8.5 g');
+});
+
+test('ingredient boxes take grams only', () => {
+	const s = new Scaler(recipe);
+	assert.equal(s.setIngredientAmount(1, '750 g'), true);
 	assert.equal(s.factor, 0.5);
-	assert.equal(s.grams(0), 2500);
+	assert.equal(s.setIngredientAmount(1, '0,75 kg'), false);
+	assert.equal(s.factor, 0.5);
 });
 
 test('float noise does not push a value up a step', () => {
@@ -91,27 +99,35 @@ test('rounding always goes up', () => {
 	assert.equal(roundUpGrams(5001), 5050);
 });
 
-test('kg formatting', () => {
+test('grams formatting: whole numbers, no thousands separator, no kg', () => {
+	assert.equal(formatGrams(18), '18 g');
 	assert.equal(formatGrams(999), '999 g');
-	assert.equal(formatGrams(1000), '1 kg');
-	assert.equal(formatGrams(1500), '1.5 kg');
-	assert.equal(formatGrams(2050), '2.05 kg');
-	assert.equal(formatGrams(12.5), '12.5 g');
+	assert.equal(formatGrams(1000), '1000 g');
+	assert.equal(formatGrams(1250), '1250 g');
+	assert.equal(formatGrams(5000), '5000 g');
+	assert.equal(formatGrams(125000), '125000 g');
 });
 
-test('no ml or L in any output', () => {
+test('grams formatting keeps a real decimal only', () => {
+	assert.equal(formatGrams(8.5), '8.5 g');
+	assert.equal(formatGrams(12.25), '12.25 g');
+	assert.equal(formatGrams(360.00000001), '360 g');
+});
+
+test('every output is grams: no kg, ml or L', () => {
 	const s = new Scaler(recipe);
 	for (const units of ['1', '37', '100', '999']) {
 		s.setUnits(units);
 		recipe.ingredients.forEach((_, i) => {
-			assert.match(s.format(i), /^\d+(\.\d+)? (g|kg)$/);
+			assert.match(s.format(i), /^\d+(\.\d+)? g$/);
 		});
 	}
 });
 
 test('comma decimal input', () => {
 	assert.deepEqual(parseAmount('1,5'), { value: 1.5, unit: null });
-	assert.deepEqual(parseAmount(' 2,25 kg '), { value: 2.25, unit: 'kg' });
+	assert.deepEqual(parseAmount(' 2,25 g '), { value: 2.25, unit: 'g' });
+	assert.equal(parseAmount('2,25 kg'), null);
 	const s = new Scaler(recipe);
 	s.setUnits('12,5');
 	assert.equal(s.factor, 0.125);
@@ -131,7 +147,7 @@ test('ignores zero, empty and invalid input and keeps the last factor', () => {
 
 test('units box does not accept a weight', () => {
 	const s = new Scaler(recipe);
-	assert.equal(s.setUnits('5 kg'), false);
+	assert.equal(s.setUnits('5 g'), false);
 	assert.equal(s.factor, 1);
 });
 

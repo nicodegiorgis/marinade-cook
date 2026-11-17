@@ -27,43 +27,28 @@ export function roundUpGrams(grams) {
 }
 
 /**
- * Trims a number to a fixed count of decimals with no trailing zeros.
- * @param {number} value Number to trim.
- * @param {number} decimals Maximum decimals.
- * @returns {string} Display string, for example "1.5".
+ * The number part of a gram amount: a plain number with no thousands
+ * separator, and decimals (up to 2) only when the value has them.
+ * @param {number} grams Amount in grams.
+ * @returns {string} For example "5000" or "8.5".
  */
-function trimDecimals(value, decimals) {
-	return String(Number(value.toFixed(decimals)));
+export function gramsValue(grams) {
+	return String(Number(grams.toFixed(2)));
 }
 
 /**
- * Splits a gram amount into a display value and unit. The only formatter for
- * amounts in the app: g below 1000, kg from 1000. Never ml or L.
+ * Formats a gram amount, for example "5000 g" or "8.5 g". The only amount
+ * formatter in the app: always grams, never kg, ml or L.
  * @param {number} grams Amount in grams.
- * @param {number} [kgDecimals=2] Maximum decimals when shown in kg.
- * @returns {{value: string, unit: string}} For example { value: '1.5', unit: 'kg' }.
- */
-export function splitGrams(grams, kgDecimals = 2) {
-	if (grams >= 1000) {
-		return { value: trimDecimals(grams / 1000, kgDecimals), unit: 'kg' };
-	}
-	return { value: trimDecimals(grams, 2), unit: 'g' };
-}
-
-/**
- * Formats a gram amount as one string, for example "250 g" or "1.5 kg".
- * @param {number} grams Amount in grams.
- * @param {number} [kgDecimals=2] Maximum decimals when shown in kg.
  * @returns {string} Display string.
  */
-export function formatGrams(grams, kgDecimals = 2) {
-	const parts = splitGrams(grams, kgDecimals);
-	return `${parts.value} ${parts.unit}`;
+export function formatGrams(grams) {
+	return `${gramsValue(grams)} g`;
 }
 
 /**
  * Parses what the user typed into an amount or units box. Accepts a comma as
- * the decimal separator and an optional "g" or "kg" suffix.
+ * the decimal separator and an optional "g" suffix.
  * @param {string} text Raw input text.
  * @returns {{value: number, unit: (string|null)}|null} Parsed value, or null if
  *   empty, zero, or not a number.
@@ -73,7 +58,7 @@ export function parseAmount(text) {
 		return null;
 	}
 	const cleaned = text.trim().replace(',', '.').toLowerCase();
-	const match = /^(\d+(?:\.\d*)?|\.\d+)\s*(kg|g)?$/.exec(cleaned);
+	const match = /^(\d+(?:\.\d*)?|\.\d+)\s*(g)?$/.exec(cleaned);
 	if (match === null) {
 		return null;
 	}
@@ -142,8 +127,7 @@ export class Scaler {
 	/**
 	 * Sets the factor from an ingredient the user has a limited amount of.
 	 * @param {number} index Ingredient position in the recipe.
-	 * @param {string} text What the user typed. A bare number is grams unless
-	 *   it ends in "kg".
+	 * @param {string} text What the user typed, in grams.
 	 * @returns {boolean} True if the value was valid and applied.
 	 */
 	setIngredientAmount(index, text) {
@@ -152,8 +136,7 @@ export class Scaler {
 		if (ingredient === undefined || parsed === null) {
 			return false;
 		}
-		const grams = parsed.unit === 'kg' ? parsed.value * 1000 : parsed.value;
-		this.#factor = grams / ingredient.grams;
+		this.#factor = parsed.value / ingredient.grams;
 		this.#anchor = { kind: 'ingredient', index };
 		return true;
 	}
@@ -190,14 +173,12 @@ export class Scaler {
 	}
 
 	/**
-	 * Formatted amount for one ingredient, for example "1.5 kg".
+	 * Formatted amount for one ingredient, for example "1500 g".
 	 * @param {number} index Ingredient position in the recipe.
 	 * @returns {string}
 	 */
 	format(index) {
-		// The anchor shows what was typed, so allow one more kg decimal (1234 g is 1.234 kg).
-		const kgDecimals = this.isAnchor('ingredient', index) ? 3 : 2;
-		return formatGrams(this.grams(index), kgDecimals);
+		return formatGrams(this.grams(index));
 	}
 
 	/**

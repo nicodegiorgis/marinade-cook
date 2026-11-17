@@ -79,7 +79,8 @@
 	--text-cook-amount-portrait: clamp(64px, 12vw, 112px);
 
 	/* Widths */
-	--amount-width: 7.5ch;
+	/* Fits 6 digits (125000), since amounts are always grams. */
+	--amount-width: 9ch;
 	--units-width: 6ch;
 	--search-width: 360px;
 	--content-max: 1400px;
@@ -785,6 +786,7 @@ button {
 }
 
 .cook-panel__amount {
+	overflow-wrap: anywhere;
 	font-size: var(--text-cook-amount);
 	font-weight: 800;
 	line-height: 1;

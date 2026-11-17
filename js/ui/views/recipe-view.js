@@ -6,7 +6,7 @@
 
 import { el, clear, text, Dom } from '../dom.js';
 import { ICONS } from '../icons.js';
-import { Scaler, splitGrams } from '../../core/scaler.js';
+import { Scaler, gramsValue } from '../../core/scaler.js';
 import { CookSession } from '../../core/cook-session.js';
 
 /**
@@ -128,19 +128,12 @@ export class RecipeView {
 	/**
 	 * @param {{name: string, note: string[]}} ing Ingredient.
 	 * @param {number} i Position.
-	 * @returns {{root: HTMLElement, input: HTMLInputElement, unit: HTMLElement}}
+	 * @returns {{root: HTMLElement, input: HTMLInputElement}}
 	 */
 	#buildRow(ing, i) {
 		const id = `amount-${i}`;
-		const unit = el('span', { className: 'scale-row__unit' });
+		const unit = el('span', { className: 'scale-row__unit', text: 'g' });
 		const input = this.#amountInput(id, {
-			focus: () => {
-				// Editing always happens in grams, so typing 1200 means 1200 g, never 1200 kg.
-				const grams = this.#scaler.grams(i);
-				input.value = String(Number(grams.toFixed(2)));
-				text(unit, 'g');
-				this.#selectAll(input);
-			},
 			input: (e) => {
 				if (this.#scaler.setIngredientAmount(i, e.target.value)) {
 					this.#changed();
@@ -165,7 +158,7 @@ export class RecipeView {
 			el('label', { className: 'visually-hidden', htmlFor: id, text: `${ing.name} amount` }),
 			el('div', { className: 'scale-row__amount' }, [input, unit]),
 		]);
-		return { root, input, unit };
+		return { root, input };
 	}
 
 	/**
@@ -321,9 +314,7 @@ export class RecipeView {
 		}
 		this.#rows.forEach((row, i) => {
 			if (row.input !== focused) {
-				const parts = splitGrams(this.#scaler.grams(i), this.#scaler.isAnchor('ingredient', i) ? 3 : 2);
-				row.input.value = parts.value;
-				text(row.unit, parts.unit);
+				row.input.value = gramsValue(this.#scaler.grams(i));
 			}
 			row.root.classList.toggle('scale-row--done', this.#session.isDone(i));
 			row.root.classList.toggle('scale-row--current', this.#session.current === i);
