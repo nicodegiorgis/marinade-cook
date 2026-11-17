@@ -214,8 +214,8 @@ export class RecipeView {
 		});
 		c.active = el('div', { className: 'cook-panel__active' }, [
 			el('div', { className: 'cook-panel__meta' }, [c.step, c.progress]),
-			el('div', { className: 'cook-panel__current' }, [c.name, c.amount, c.note]),
-			c.next,
+			// Name, amount and Next sit together just above the buttons, so the eye travels less.
+			el('div', { className: 'cook-panel__current' }, [c.name, c.amount, c.note, c.next]),
 			el('div', { className: 'cook-panel__actions' }, [c.back, c.pour]),
 		]);
 		c.made = el('p', { className: 'cook-panel__made' });

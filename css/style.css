@@ -772,12 +772,13 @@ button {
 	border-radius: var(--radius-pill);
 }
 
+/* margin-top: auto pushes the group down to the buttons, leaving any spare space up top. */
 .cook-panel__current {
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	gap: var(--space-2);
+	margin-top: auto;
 }
 
 .cook-panel__name {
@@ -840,7 +841,7 @@ button {
 	}
 
 	.cook-panel__current {
-		flex: 0 0 auto;
+		margin-top: 0;
 	}
 
 	.cook-panel__amount {
