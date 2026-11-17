@@ -1,5 +1,7 @@
 # Marinade Cook
 
+[![Tests](https://github.com/nicodegiorgis/marinade-cook/actions/workflows/test.yml/badge.svg)](https://github.com/nicodegiorgis/marinade-cook/actions/workflows/test.yml)
+
 An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the device.
 
 The full product spec is in [docs/spec.md](docs/spec.md).
@@ -103,6 +105,8 @@ All amounts are grams, liquids included. A file with problems is rejected with a
 ## Development
 
 No dependencies, no build step. You need Node 20 or newer for the tests and Python (or any static server) to serve the app.
+
+The tests also run on every push and pull request through GitHub Actions.
 
 ```bash
 node --test
