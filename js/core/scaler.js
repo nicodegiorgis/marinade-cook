@@ -168,13 +168,19 @@ export class Scaler {
 	}
 
 	/**
-	 * The amount to pour for one ingredient. The anchor ingredient keeps its
-	 * exact typed value; every other one is rounded up.
+	 * The amount to pour for one ingredient. At base every amount is the exact
+	 * value from the file; once something is typed, the anchor ingredient keeps
+	 * its exact typed value and every other one is rounded up.
 	 * @param {number} index Ingredient position in the recipe.
 	 * @returns {number} Grams.
 	 */
 	grams(index) {
-		const raw = this.#recipe.ingredients[index].grams * this.#factor;
+		const source = this.#recipe.ingredients[index].grams;
+		// The file is the recipe as written; rounding is only for scaled batches.
+		if (this.isBase) {
+			return source;
+		}
+		const raw = source * this.#factor;
 		if (this.isAnchor('ingredient', index)) {
 			return raw;
 		}

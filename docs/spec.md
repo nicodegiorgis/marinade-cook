@@ -86,6 +86,7 @@ Header: back, the recipe name as the title, and **Reset batch**.
   - 200 to 1999 g: 10 g
   - 2000 g and over: 50 g
   - The anchor shows exactly what was typed.
+  - **At base** (nothing typed yet, or after Reset batch) there is no rounding: every ingredient shows its exact grams from the file (`3870 g`, `8.5 g`). Rounding only applies once a units or ingredient value is typed, even if the typed units equal the base yield.
 - **Display:** always grams, everywhere (inputs, cook mode, the Next line). A plain number with no thousands separator: `5000 g`, `1250 g`, `18 g`. Decimals only when the value has one (`8.5 g`), at most 2. **No kg, ml or L.** Inputs accept grams only. Keep this in one formatter.
 - Inputs use `inputmode="decimal"`, not `type="number"`. Accept a comma as the decimal separator. Ignore empty or zero values, and keep the last valid factor. The one exception is the units box: empty means the base recipe (section 4.3).
 - Optional "Total / Per bucket" toggle: amount ÷ `batchBuckets`, with the same rounding (open question 3).
@@ -180,7 +181,7 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 - [ ] Wake lock works where supported.
 - [ ] Landscape is split, and portrait is stacked. No overflow on 10.2" to 13" iPads.
 - [ ] No `innerHTML` with imported data, and no CSP console errors.
-- [ ] `node --test tests/` passes.
+- [ ] `node --test` passes.
 
 ## 12. Open questions (ask, don't guess)
 

@@ -29,6 +29,47 @@ test('starts at the base yield', () => {
 	assert.equal(s.isBase, true);
 });
 
+const oddRecipe = {
+	id: 'test-marinade-odd',
+	name: 'Test Marinade Odd',
+	yieldUnits: 50,
+	ingredients: [
+		{ name: 'Oil', grams: 3870 },
+		{ name: 'Sugar', grams: 2260 },
+		{ name: 'Salt', grams: 34 },
+		{ name: 'Chilli', grams: 8.5 },
+		{ name: 'Pepper', grams: 199.25 },
+	],
+};
+
+test('base amounts equal the source values exactly, with no rounding', () => {
+	const s = new Scaler(oddRecipe);
+	assert.equal(s.isBase, true);
+	assert.deepEqual(oddRecipe.ingredients.map((_, i) => s.grams(i)), [3870, 2260, 34, 8.5, 199.25]);
+	assert.deepEqual(
+		oddRecipe.ingredients.map((_, i) => s.format(i)),
+		['3870 g', '2260 g', '34 g', '8.5 g', '199.25 g'],
+	);
+});
+
+test('base amounts come back exactly after reset', () => {
+	const s = new Scaler(oddRecipe);
+	s.setUnits('75');
+	s.reset();
+	assert.deepEqual(oddRecipe.ingredients.map((_, i) => s.grams(i)), [3870, 2260, 34, 8.5, 199.25]);
+});
+
+test('rounding applies once a value is typed, even at the base yield', () => {
+	const s = new Scaler(oddRecipe);
+	s.setUnits('50');
+	assert.equal(s.factor, 1);
+	// 3870 rounds up to the 50 g step, 34 to 5 g, 8.5 to 1 g.
+	assert.deepEqual(oddRecipe.ingredients.map((_, i) => s.grams(i)), [3900, 2300, 35, 9, 200]);
+	s.setIngredientAmount(2, '34');
+	assert.equal(s.grams(2), 34);
+	assert.equal(s.grams(0), 3900);
+});
+
 test('typing units leaves the base state, even when it equals the base yield', () => {
 	const s = new Scaler(recipe);
 	s.setUnits('100');
