@@ -2,7 +2,7 @@
   "name": "marinade-cook",
   "private": true,
   "type": "module",
-  "description": "Offline iPad app for scaling and cooking marinade batches",
+  "description": "Offline app for scaling and cooking marinade batches",
   "scripts": {
     "test": "node --test"
   }

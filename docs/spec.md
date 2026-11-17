@@ -4,7 +4,7 @@ This is the detailed spec. `CLAUDE.md` holds the summary and the hard rules.
 
 ## 1. What this is
 
-An iPad sits on the kitchen bench and works like a cookbook:
+A tablet (or phone, or computer) sits on the kitchen bench and works like a cookbook:
 
 1. A main page lists all recipes.
 2. Tapping a recipe opens its page. The user can type the number of units to make, **or** the amount on hand of any ingredient (for example "only 1200 g of oil"), and every other quantity rescales.
@@ -15,14 +15,14 @@ An iPad sits on the kitchen bench and works like a cookbook:
 | Topic | Decision | Why |
 |---|---|---|
 | Layout | **Split view.** The scaling list is on the left and the current cook-mode ingredient is on the right, both on one screen. | The full recipe stays visible while pouring. |
-| Delivery | **Offline Progressive Web App**, installed to the iPad Home Screen | It must work with no wifi or data. |
+| Delivery | **Offline Progressive Web App**, installed to the device's Home Screen or app list | It must work with no wifi or data. |
 | Hosting | **GitHub Pages** from this public repo | It's free, and the code holds no private data. |
 | Stack | Plain HTML, CSS, and vanilla JS. No framework, build step, or CDN. | It's transparent, works offline, and is easy to audit. |
 
 ## 3. Privacy model
 
-- The repo contains **only the app**. The real data is `recipes.json`, which the owner keeps on their own devices and moves to the iPad directly (for example by AirDrop).
-- The user taps **Import recipes**. Data is stored **only in local browser storage on that iPad**. Nothing is sent anywhere.
+- The repo contains **only the app**. The real data is `recipes.json`, which the owner keeps on their own devices and moves to the device directly (for example by AirDrop or a USB cable).
+- The user taps **Import recipes**. Data is stored **only in local browser storage on that device**. Nothing is sent anywhere.
 - The README explains that public code and private data are kept apart on purpose.
 - A strict CSP meta tag: `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'`. No inline scripts or inline styles.
 - A failed import shows a clear error and keeps the existing data.
@@ -33,7 +33,7 @@ There's one page with three views. Use hash routes (`#/`, `#/r/<id>`) so the bac
 
 ### 4.1 First run: import
 Shown when no recipes are stored.
-- An icon, the heading "Add your recipes", and the line "Pick recipes.json from Files. It stays on this iPad."
+- An icon, the heading "Add your recipes", and the line "Pick your recipes.json file. It stays on this device."
 - One large **Import recipes** button, a styled `<input type="file">`.
 - If the import succeeds, go to the list. If it fails, show the error inline.
 - In a plain Safari tab (not installed), show "Add to Home Screen first, then import" (see section 8).
@@ -158,15 +158,15 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
   - Inputs: white background, 2 px `--color-charcoal` border, a `--color-purple` border on focus.
   - Done rows: strikethrough in `--color-charcoal`. Current row: `--color-orange` background with ink text.
   - Dark mode: `--color-ink` page background, butter-yellow text, purple surfaces, and the main button in butter with ink text. Check every text and background pair against WCAG AA (at least 4.5:1).
-- **Theme setting** in the settings panel: **Auto** (follows the iPad's light or dark setting), **Light**, or **Dark**. The default is Auto. The choice is saved locally on the iPad and applies straight away. Light and Dark use the same palette tokens as above; Dark forces the dark-mode token set even when the iPad is in light mode, and Light the reverse.
+- **Theme setting** in the settings panel: **Auto** (follows the device's light or dark setting), **Light**, or **Dark**. The default is Auto. The choice is saved locally on the device and applies straight away. Light and Dark use the same palette tokens as above; Dark forces the dark-mode token set even when the device is in light mode, and Light the reverse.
 - UI text is in English.
 
 ## 10. Deployment (for the README)
 
 1. **Settings → Pages →** "Deploy from a branch", `main`, `/ (root)`.
-2. On the iPad, open `https://<username>.github.io/marinade-cook/` in Safari.
-3. Share → **Add to Home Screen**.
-4. Open it **from the Home Screen icon** and import `recipes.json` from Files.
+2. On the device, open `https://<username>.github.io/marinade-cook/` in the browser.
+3. Install it: Share → **Add to Home Screen** on iPad or iPhone (Safari), **Install app** on Android (Chrome), or the install icon in the address bar on a computer (Chrome or Edge).
+4. Open the installed app and import `recipes.json`. On iPad and iPhone, import from the Home Screen icon, not a Safari tab.
 5. Test in airplane mode.
 
 ## 11. Acceptance checklist
@@ -180,7 +180,7 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
 - [ ] Batch complete and Reset batch work. Progress survives reopening the app.
 - [ ] Works offline after the first load.
 - [ ] Wake lock works where supported.
-- [ ] Landscape is split, and portrait is stacked. No overflow on 10.2" to 13" iPads.
+- [ ] Landscape is split, and portrait is stacked. No overflow on phones, 10" to 13" tablets or desktop windows.
 - [ ] No `innerHTML` with imported data, and no CSP console errors.
 - [ ] `node --test` passes.
 

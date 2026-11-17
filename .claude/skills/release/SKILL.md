@@ -22,7 +22,7 @@ Run these in order, and stop and report if any step fails.
    grep -rnE 'https?://' index.html js/ css/ sw.js | grep -v localhost && echo "Check: no external requests allowed"
    grep -rn '—' . --include='*.js' --include='*.css' --include='*.html' --include='*.md' && echo "Remove em dashes"
    ```
-6. **Manual check list for the pull request.** Add this to the PR description, so the owner can tick it off on the iPad:
+6. **Manual check list for the pull request.** Add this to the PR description, so the owner can tick it off on a device:
    - Opens offline (airplane mode)
    - Units and ingredient scaling correct on one recipe
    - Cook mode through a full recipe, then reset

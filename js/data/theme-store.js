@@ -5,7 +5,7 @@
 
 const STORAGE_KEY = 'marinade-cook:theme';
 
-/** Allowed theme choices. Auto follows the iPad's light or dark setting. */
+/** Allowed theme choices. Auto follows the device's light or dark setting. */
 export const THEME_MODES = Object.freeze(['auto', 'light', 'dark']);
 
 /**

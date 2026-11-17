@@ -1,6 +1,6 @@
 # Marinade Cook
 
-An offline iPad web app (PWA) for scaling and cooking bulk marinade batches. There's a recipe list, a split-view recipe page (live scaling on the left, step-by-step cook mode on the right), and recipes imported from a private JSON file that stays on the device.
+An offline web app (PWA) for scaling and cooking bulk marinade batches on a tablet, phone or computer. There's a recipe list, a split-view recipe page (live scaling on the left, step-by-step cook mode on the right), and recipes imported from a private JSON file that stays on the device.
 
 **Full product spec:** `docs/spec.md`. Read it before any feature work, and update it when a decision changes.
 

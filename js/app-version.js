@@ -5,4 +5,4 @@
  */
 
 /** App version number, matching marinade-cook-vN in sw.js. */
-export const APP_VERSION = 2;
+export const APP_VERSION = 3;

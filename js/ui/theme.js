@@ -25,7 +25,7 @@ export class Theme {
 	}
 
 	/**
-	 * Applies a choice. 'auto' removes the override so CSS follows the iPad.
+	 * Applies a choice. 'auto' removes the override so CSS follows the device.
 	 * @param {string} mode 'auto', 'light' or 'dark'.
 	 * @returns {void}
 	 */

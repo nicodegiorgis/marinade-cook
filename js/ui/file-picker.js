@@ -1,6 +1,6 @@
 /**
  * file-picker.js
- * A big button that opens the Files picker and imports the chosen file, with
+ * A big button that opens the file picker and imports the chosen file, with
  * inline errors. Used by the first-run screen and the settings panel.
  */
 

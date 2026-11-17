@@ -1,6 +1,6 @@
 # Marinade Cook
 
-An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer, and was designed first for an iPad in the kitchen. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the device.
+An offline web app for scaling and cooking bulk marinade batches. It works on a tablet, phone or computer. It has a recipe list, a split-view recipe page (live scaling on one side, step-by-step cook mode on the other), and recipes imported from a private JSON file that never leaves the device.
 
 The full product spec is in [docs/spec.md](docs/spec.md).
 

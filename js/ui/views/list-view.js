@@ -140,7 +140,7 @@ export class ListView {
 					el('label', { className: 'theme-picker__label', htmlFor: id, text: o.label }),
 				]);
 			})),
-			el('p', { className: 'theme-picker__hint', text: 'Auto follows the iPad’s light or dark setting.' }),
+			el('p', { className: 'theme-picker__hint', text: 'Auto follows the device’s light or dark setting.' }),
 		]);
 	}
 
@@ -210,7 +210,7 @@ export class ListView {
 			confirmBox,
 			el('p', {
 				className: 'settings__note',
-				text: 'Recipes are stored only on this iPad. Deleting the app from the Home Screen '
+				text: 'Recipes are stored only on this device. Uninstalling the app '
 					+ 'erases them, so keep recipes.json somewhere safe.',
 			}),
 		]);
