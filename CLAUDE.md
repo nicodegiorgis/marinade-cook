@@ -37,9 +37,11 @@ js/core/              pure logic, no DOM (unit tested)
 js/data/              persistence
   recipe-store.js     RecipeStore: save/load imported recipes
   progress-store.js   ProgressStore: per-recipe factor and cook progress
+  theme-store.js      ThemeStore: saved theme choice (auto, light, dark)
 js/ui/                DOM layer
   dom.js              safe element helpers (el(), text(), clear())
   router.js           Router: hash routes #/ and #/r/<id>
+  theme.js            Theme: applies the theme choice (data-theme on <html>)
   views/              ImportView, ListView, RecipeView
 js/platform/          browser APIs
   wake-lock.js        WakeLock wrapper

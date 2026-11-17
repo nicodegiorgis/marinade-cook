@@ -22,6 +22,8 @@ export class ListView {
 	 * @param {import('../../data/recipe-store.js').RecipeStore} deps.recipeStore Recipe store.
 	 * @param {import('../router.js').Router} deps.router Router.
 	 * @param {number} deps.appVersion Version shown in settings.
+	 * @param {import('../../data/theme-store.js').ThemeStore} deps.themeStore Saved theme choice.
+	 * @param {import('../theme.js').Theme} deps.theme Applies a theme choice.
 	 * @param {function(): void} deps.onImported Called after a new file is imported.
 	 */
 	constructor(container, deps) {
@@ -106,6 +108,43 @@ export class ListView {
 	}
 
 	/**
+	 * Builds the Auto / Light / Dark choice. Applies and saves on tap.
+	 * @returns {HTMLFieldSetElement}
+	 */
+	#buildThemePicker() {
+		const current = this.#deps.themeStore.get();
+		const options = [
+			{ mode: 'auto', label: 'Auto' },
+			{ mode: 'light', label: 'Light' },
+			{ mode: 'dark', label: 'Dark' },
+		];
+		return el('fieldset', { className: 'theme-picker' }, [
+			el('legend', { className: 'theme-picker__legend', text: 'Theme' }),
+			el('div', { className: 'theme-picker__options' }, options.map((o) => {
+				const id = `theme-${o.mode}`;
+				return el('div', { className: 'theme-picker__option' }, [
+					el('input', {
+						type: 'radio',
+						name: 'theme',
+						id,
+						value: o.mode,
+						className: 'theme-picker__input',
+						checked: o.mode === current,
+						on: {
+							change: () => {
+								this.#deps.themeStore.set(o.mode);
+								this.#deps.theme.apply(o.mode);
+							},
+						},
+					}),
+					el('label', { className: 'theme-picker__label', htmlFor: id, text: o.label }),
+				]);
+			})),
+			el('p', { className: 'theme-picker__hint', text: 'Auto follows the iPad’s light or dark setting.' }),
+		]);
+	}
+
+	/**
 	 * Builds the settings dialog. Importing a new file needs a confirm step.
 	 * @returns {HTMLDialogElement}
 	 */
@@ -166,6 +205,7 @@ export class ListView {
 				el('dt', { text: 'Imported' }), el('dd', { text: dateText }),
 				el('dt', { text: 'App version' }), el('dd', { text: `v${this.#deps.appVersion}` }),
 			]),
+			this.#buildThemePicker(),
 			startButton,
 			confirmBox,
 			el('p', {

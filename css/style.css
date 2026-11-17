@@ -87,8 +87,14 @@
 	--dialog-width: 560px;
 }
 
+/*
+ * Dark roles. Auto follows the iPad through the media query; the settings
+ * panel can force a theme with data-theme on <html>. Keep both dark blocks
+ * identical.
+ */
 @media (prefers-color-scheme: dark) {
-	:root {
+	:root:not([data-theme="light"]) {
+		color-scheme: dark;
 		--bg: var(--color-ink);
 		--text: var(--color-butter);
 		--text-muted: var(--color-butter);
@@ -114,6 +120,38 @@
 		--progress-fill: var(--color-orange);
 		--line: var(--color-butter);
 	}
+}
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
+	--bg: var(--color-ink);
+	--text: var(--color-butter);
+	--text-muted: var(--color-butter);
+	--heading: var(--color-butter);
+	--header-bg: var(--color-purple);
+	--surface: var(--color-purple);
+	--surface-text: var(--color-butter);
+	--current-bg: var(--color-orange);
+	--current-text: var(--color-ink);
+	--done-bg: var(--color-ink);
+	--done-text: var(--color-butter);
+	--main-bg: var(--color-butter);
+	--main-text: var(--color-ink);
+	--secondary-border: var(--color-butter);
+	--secondary-text: var(--color-butter);
+	--input-bg: var(--color-on-dark);
+	--input-text: var(--color-ink);
+	--input-border: var(--color-charcoal);
+	--input-focus: var(--color-purple);
+	--focus-ring: var(--color-butter);
+	--icon: var(--color-butter);
+	--progress-track: var(--color-purple);
+	--progress-fill: var(--color-orange);
+	--line: var(--color-butter);
+}
+
+:root[data-theme="light"] {
+	color-scheme: light;
 }
 
 /* ==========================================================================
@@ -545,6 +583,70 @@ button {
 
 .settings__facts dd {
 	font-weight: 700;
+}
+
+.theme-picker {
+	margin: 0 0 var(--space-5);
+	padding: 0;
+	border: 0;
+}
+
+.theme-picker__legend {
+	padding: 0;
+	margin-bottom: var(--space-2);
+	color: var(--text-muted);
+}
+
+.theme-picker__options {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--space-2);
+}
+
+.theme-picker__option {
+	position: relative;
+}
+
+/* The radio stays in the page for keyboard and screen readers; the label is the big target. */
+.theme-picker__input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+}
+
+.theme-picker__label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--tap-min);
+	border: var(--border) solid var(--secondary-border);
+	border-radius: var(--radius-pill);
+	color: var(--secondary-text);
+	font-weight: 700;
+	touch-action: manipulation;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+}
+
+.theme-picker__input:checked + .theme-picker__label {
+	background: var(--main-bg);
+	border-color: var(--main-bg);
+	color: var(--main-text);
+}
+
+.theme-picker__input:focus-visible + .theme-picker__label {
+	outline: var(--focus-width) solid var(--focus-ring);
+	outline-offset: var(--focus-width);
+}
+
+.theme-picker__hint {
+	margin-top: var(--space-2);
+	font-size: var(--text-small);
+	color: var(--text-muted);
 }
 
 .settings__confirm {

@@ -43,7 +43,7 @@ Shown when no recipes are stored.
 - **All recipes in one scrollable list, sorted A to Z.** No "+ N more" tiles.
 - Each card shows the name and the base yield ("100 units").
 - 3 columns in landscape, 2 in portrait, scrolling vertically.
-- The settings icon opens: Import new file (with a confirm step), the import date, the recipe count, the app version, and a note that deleting the app erases the recipes.
+- The settings icon opens: Import new file (with a confirm step), the import date, the recipe count, the app version, a **Theme** choice (section 9), and a note that deleting the app erases the recipes.
 
 ### 4.3 Recipe page (split view)
 Header: back, the recipe name as the title, and **Reset batch**.
@@ -158,7 +158,8 @@ See the architecture in `CLAUDE.md`. Add `icons/` (icon-192.png, icon-512.png, a
   - Inputs: white background, 2 px `--color-charcoal` border, a `--color-purple` border on focus.
   - Done rows: strikethrough in `--color-charcoal`. Current row: `--color-orange` background with ink text.
   - Dark mode: `--color-ink` page background, butter-yellow text, purple surfaces, and the main button in butter with ink text. Check every text and background pair against WCAG AA (at least 4.5:1).
-- Follow the system light or dark theme. UI text is in English.
+- **Theme setting** in the settings panel: **Auto** (follows the iPad's light or dark setting), **Light**, or **Dark**. The default is Auto. The choice is saved locally on the iPad and applies straight away. Light and Dark use the same palette tokens as above; Dark forces the dark-mode token set even when the iPad is in light mode, and Light the reverse.
+- UI text is in English.
 
 ## 10. Deployment (for the README)
 

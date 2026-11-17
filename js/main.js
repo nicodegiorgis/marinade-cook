@@ -7,8 +7,10 @@
 import { APP_VERSION } from './app-version.js';
 import { RecipeStore } from './data/recipe-store.js';
 import { ProgressStore } from './data/progress-store.js';
+import { ThemeStore } from './data/theme-store.js';
 import { Router } from './ui/router.js';
 import { el } from './ui/dom.js';
+import { Theme } from './ui/theme.js';
 import { ImportView } from './ui/views/import-view.js';
 import { ListView } from './ui/views/list-view.js';
 import { RecipeView } from './ui/views/recipe-view.js';
@@ -25,6 +27,8 @@ class App {
 	#progressStore;
 	#router;
 	#wakeLock;
+	#themeStore;
+	#theme;
 	#view = null;
 
 	/**
@@ -36,6 +40,8 @@ class App {
 		this.#recipeStore = new RecipeStore(storage);
 		this.#progressStore = new ProgressStore(storage);
 		this.#wakeLock = new WakeLock();
+		this.#themeStore = new ThemeStore(storage);
+		this.#theme = new Theme();
 		this.#router = new Router((route) => this.#show(route));
 	}
 
@@ -44,6 +50,8 @@ class App {
 	 * @returns {void}
 	 */
 	start() {
+		// Before the first view renders, so a forced theme never flashes the other one.
+		this.#theme.apply(this.#themeStore.get());
 		this.#router.start();
 		const sw = new SwRegister((apply) => this.#showUpdateBanner(apply));
 		sw.register();
@@ -92,6 +100,8 @@ class App {
 			recipeStore: this.#recipeStore,
 			router: this.#router,
 			appVersion: APP_VERSION,
+			themeStore: this.#themeStore,
+			theme: this.#theme,
 			onImported,
 		});
 	}

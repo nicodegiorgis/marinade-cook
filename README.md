@@ -29,7 +29,7 @@ Deleting the app from the Home Screen erases its recipes. Keep `recipes.json` so
 - Every amount is in grams, shown as a plain number (`5000 g`, `1250 g`). Typing `1200` in an ingredient box means 1200 g. A comma works as the decimal point.
 - **Cook mode:** tap **Poured** after each ingredient. **Back** steps back one. Tapping an ingredient's name in the list jumps straight to it.
 - **Reset batch** clears progress, returns to the base yield and empties the units box. Progress and amounts are saved per recipe, so closing the app resumes the batch.
-- **Settings** (the menu button on the list) shows the recipe count, import date and app version, and lets you import a new file.
+- **Settings** (the menu button on the list) shows the recipe count, import date and app version, lets you import a new file, and has a **Theme** choice: Auto (follows the iPad's light or dark setting, the default), Light or Dark. The choice is saved on the iPad.
 
 ## v1 defaults for the open questions
 
@@ -92,8 +92,8 @@ icons/                app icons (192, 512, 180 apple-touch)
 js/main.js            entry point: wires stores, router, views
 js/app-version.js     version shown in settings, matches CACHE_VERSION
 js/core/              pure logic, unit tested (Scaler, RecipeValidator, CookSession)
-js/data/              persistence (RecipeStore, ProgressStore)
-js/ui/                DOM helpers, router, file picker and the three views
+js/data/              persistence (RecipeStore, ProgressStore, ThemeStore)
+js/ui/                DOM helpers, router, theme, file picker and the three views
 js/platform/          wake lock, service worker registration, display mode
 tests/                node --test unit tests for js/core
 sample-recipes.json   made-up data
